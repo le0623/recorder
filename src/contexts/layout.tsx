@@ -14,7 +14,7 @@ type LayoutProviderProps = {
 };
 
 export const LayoutProvider = ({ children }: LayoutProviderProps) => {
-  const [layout, setLayout] = useState<Layout>('screenAndCamera');
+  const [layout, setLayout] = useState<Layout>('cameraOnly');
 
   return (
     <LayoutContext.Provider value={{ layout, setLayout }}>

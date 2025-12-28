@@ -1,7 +1,7 @@
 import cx from 'classnames';
 
 import Footer from 'components/Footer';
-import LayoutSwitcher from 'components/LayoutSwitcher';
+// import LayoutSwitcher from 'components/LayoutSwitcher';
 import PiPWindow from 'components/PiPWindow';
 import VideoStreams from 'components/VideoStreams';
 import { useLayout } from 'contexts/layout';
@@ -35,7 +35,7 @@ const App = () => {
     >
       <main className={styles.main}>
         <VideoStreams />
-        <LayoutSwitcher />
+        {/* <LayoutSwitcher /> */}
       </main>
       <Footer />
       {pipWindow && <PiPWindow pipWindow={pipWindow} />}

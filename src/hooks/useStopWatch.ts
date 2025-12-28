@@ -30,7 +30,8 @@ const useStopWatch = () => {
 
     stop: () => {
       cancelAnimationFrame(requestIdRef.current);
-      setPreviousDuration(previousDuration + performance.now() - startTime);
+      // setPreviousDuration(previousDuration + performance.now() - startTime);
+      setPreviousDuration(0);
       setStartTime(0);
       setLastTime(0);
     },
