@@ -18,6 +18,8 @@ const RecordingContext = createContext<RecordingContextType | undefined>(
   undefined,
 );
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 type RecordingProviderProps = {
   children: React.ReactNode;
 };
@@ -30,9 +32,37 @@ export const RecordingProvider = ({ children }: RecordingProviderProps) => {
     useStreams();
 
   const mediaRecorder = useRef<MediaRecorder>();
+  const chunkIndex = useRef(0);
+
+  // 🔹 Example metadata (replace with real values)
+  const sessionId = useRef(crypto.randomUUID());
+  const userName = 'Unkown';
+  const userEmail = 'unknown@gmail.com';
+
+  const uploadChunk = async (blob: Blob) => {
+    const formData = new FormData();
+
+    formData.append('session', sessionId.current);
+    formData.append('name', userName);
+    formData.append('email', userEmail);
+    formData.append('chunk', blob, `chunk-${chunkIndex.current}.webm`);
+    formData.append('index', chunkIndex.current.toString());
+
+    chunkIndex.current++;
+
+    try {
+      await fetch(`${apiUrl}/api/upload-chunk`, {
+        method: 'POST',
+        body: formData,
+      });
+    } catch (err) {
+      console.error('Chunk upload failed', err);
+    }
+  };
 
   const startRecording = () => {
     setIsRecording(true);
+    chunkIndex.current = 0;
 
     const composedStream = composeStreams(
       layout === 'screenOnly' ? null : cameraStream,
@@ -45,29 +75,36 @@ export const RecordingProvider = ({ children }: RecordingProviderProps) => {
       videoBitsPerSecond: 8e6,
     });
 
-    const chunks: Blob[] = [];
+    // const chunks: Blob[] = []; // optional local backup
 
-    mediaRecorder.current.ondataavailable = (event) => {
-      if (event.data.size > 0) chunks.push(event.data);
+    mediaRecorder.current.ondataavailable = async (event) => {
+      if (!event.data || event.data.size === 0) return;
+
+      // 🔴 Real-time upload (every second)
+      await uploadChunk(event.data);
+
+      // // optional: keep locally for final download
+      // chunks.push(event.data);
     };
 
-    mediaRecorder.current.onstop = () => {
-      composedStream
-        .getVideoTracks()
-        .forEach((composedTrack) => composedTrack.stop());
+    // mediaRecorder.current.onstop = () => {
+    //   composedStream
+    //     .getVideoTracks()
+    //     .forEach((composedTrack) => composedTrack.stop());
 
-      const blob = new Blob(chunks);
+    //   const blob = new Blob(chunks);
 
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'recording.webm';
-      link.click();
+    //   const url = URL.createObjectURL(blob);
+    //   const link = document.createElement('a');
+    //   link.href = url;
+    //   link.download = 'recording.webm';
+    //   link.click();
 
-      window.URL.revokeObjectURL(url);
-    };
+    //   window.URL.revokeObjectURL(url);
+    // };
 
-    mediaRecorder.current.start();
+    // 🔴 Emit chunks every 1 second
+    mediaRecorder.current.start(1000);
   };
 
   const stopRecording = () => {
