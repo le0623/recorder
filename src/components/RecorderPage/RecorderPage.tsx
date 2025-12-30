@@ -7,6 +7,7 @@ import { MediaDevicesProvider } from 'contexts/mediaDevices';
 import { PictureInPictureProvider } from 'contexts/pictureInPicture';
 import { RecordingProvider } from 'contexts/recording';
 import { ScreenshareProvider } from 'contexts/screenshare';
+import { SessionProvider } from 'contexts/session';
 import { StreamsProvider } from 'contexts/streams';
 
 const isBrowserSupported =
@@ -43,11 +44,18 @@ const RecorderPage = ({
     </RecordingProvider>
   );
 
+  const SessionProviderWithProps = ({
+    children,
+  }: {
+    children: React.ReactNode;
+  }) => <SessionProvider sessionId={sessionId}>{children}</SessionProvider>;
+
   return (
     <Compose
       components={[
         LayoutProvider,
         StreamsProvider,
+        SessionProviderWithProps,
         RecordingProviderWithProps,
         PictureInPictureProvider,
         MediaDevicesProvider,

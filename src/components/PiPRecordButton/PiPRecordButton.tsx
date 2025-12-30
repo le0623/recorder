@@ -31,6 +31,7 @@ const PiPRecordButton = (
           setCountingDown(false);
         }
       }}
+      value={`Start recording`}
     />
   );
 };

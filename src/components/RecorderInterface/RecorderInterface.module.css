@@ -2,15 +2,16 @@
   display: grid;
   position: fixed;
   inset: 0;
-  grid-template-rows: minmax(0, auto) auto;
+  grid-template-rows: minmax(0, auto) auto auto;
   grid-template-columns: minmax(0, auto);
   align-content: space-between;
   justify-content: center;
-  row-gap: 24px;
+  row-gap: 0;
   padding: 24px;
+  padding-bottom: 0;
 
   &.placeholder {
-    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-rows: minmax(0, 1fr) auto auto;
   }
 }
 

@@ -1,6 +1,7 @@
 import cx from 'classnames';
 
 import Footer from 'components/Footer';
+import Questions from 'components/Questions';
 // import LayoutSwitcher from 'components/LayoutSwitcher';
 import PiPWindow from 'components/PiPWindow';
 import VideoStreams from 'components/VideoStreams';
@@ -36,6 +37,7 @@ const RecorderInterface = () => {
       <main className={styles.main}>
         <VideoStreams />
         {/* <LayoutSwitcher /> */}
+        <Questions />
       </main>
       <Footer />
       {pipWindow && <PiPWindow pipWindow={pipWindow} />}
