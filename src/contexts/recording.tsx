@@ -22,9 +22,17 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 type RecordingProviderProps = {
   children: React.ReactNode;
+  sessionId: string;
+  userName: string;
+  userEmail: string;
 };
 
-export const RecordingProvider = ({ children }: RecordingProviderProps) => {
+export const RecordingProvider = ({
+  children,
+  sessionId,
+  userName,
+  userEmail,
+}: RecordingProviderProps) => {
   const { layout } = useLayout();
   const [isRecording, setIsRecording] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -33,16 +41,12 @@ export const RecordingProvider = ({ children }: RecordingProviderProps) => {
 
   const mediaRecorder = useRef<MediaRecorder>();
   const chunkIndex = useRef(0);
-
-  // 🔹 Example metadata (replace with real values)
-  const sessionId = useRef(crypto.randomUUID());
-  const userName = 'Unkown';
-  const userEmail = 'unknown@gmail.com';
+  const sessionIdRef = useRef(sessionId);
 
   const uploadChunk = async (blob: Blob) => {
     const formData = new FormData();
 
-    formData.append('session', sessionId.current);
+    formData.append('session', sessionIdRef.current);
     formData.append('name', userName);
     formData.append('email', userEmail);
     formData.append('chunk', blob, `chunk-${chunkIndex.current}.webm`);

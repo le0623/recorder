@@ -27,13 +27,15 @@
     "@mui/material": "^5.14.1",
     "classnames": "^2.3.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.11.0"
   },
   "devDependencies": {
     "@types/dom-mediacapture-transform": "^0.1.6",
     "@types/node": "^20.4.2",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
     "@vitejs/plugin-react-swc": "^3.3.2",
